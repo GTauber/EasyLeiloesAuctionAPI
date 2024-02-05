@@ -1,0 +1,16 @@
+server:
+  port: 8080
+
+spring:
+  r2dbc:
+    url: r2dbc:mysql://localhost:3309/as_easyleiloes
+    username: root
+    password: testeroot
+
+
+logging:
+  level:
+    web: debug
+    io:
+      r2dbc:
+        pool: debug
