@@ -3,10 +3,11 @@ server:
 
 spring:
   r2dbc:
-    url: r2dbc:mysql://localhost:3309/as_easyleiloes
-    username: root
-    password: testeroot
-
+    url: r2dbc:mysql://localhost:3306/as_easyleiloes
+    username: tg
+    password: secret
+  flyway:
+    locations: classpath:db/migration
 
 logging:
   level:
