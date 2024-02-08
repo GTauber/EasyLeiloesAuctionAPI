@@ -37,7 +37,7 @@ public class Bid implements Serializable {
     @Version
     private Long version;
     private Long auctionId;
-    private Long userUuid;
+    private String bidderUuid;
     private Double amount;
 
     @CreatedDate
