@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import pb.auctionservice.enums.AuctionStatus;
 import pb.auctionservice.models.dto.AuctionDto;
+import pb.auctionservice.models.dto.BidDto;
 import pb.auctionservice.models.dto.ProductDto;
 import pb.auctionservice.models.entity.Auction;
 import pb.auctionservice.models.entity.Bid;
@@ -76,4 +77,11 @@ public class FixtureFactory {
             .build();
     }
 
+    public static BidDto validBidDto() {
+        return BidDto.builder()
+            .auctionId(1L)
+            .bidderUuid("0001")
+            .amount(200.0)
+            .build();
+    }
 }
