@@ -20,7 +20,7 @@ import reactor.core.publisher.Mono;
 
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
-@RequestMapping("/auction")
+@RequestMapping("/bid")
 @AllArgsConstructor
 @Slf4j
 public class BidController {

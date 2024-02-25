@@ -34,8 +34,9 @@ class ProductServiceImplTest {
     void createProduct() {
         when(productRepository.save(any())).thenReturn(Mono.just(validProduct()));
         when(conversionService.convert(any(ProductDto.class), eq(Product.class))).thenReturn(validProduct());
-        var response = productService.createProduct(validProductDto()).block();
-        assertNotNull(response);
 
+        var response = productService.createProduct(validProductDto()).block();
+
+        assertNotNull(response);
     }
 }
