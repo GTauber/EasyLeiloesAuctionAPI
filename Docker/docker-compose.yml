@@ -1,5 +1,5 @@
 services:
-  auction-service-mysql:
+  easy-auction-mysql:
     image: mysql:latest
     environment:
       MYSQL_DATABASE: as_easyleiloes

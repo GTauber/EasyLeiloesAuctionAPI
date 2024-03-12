@@ -10,7 +10,6 @@ import pb.auctionservice.models.entity.Bid;
 @Component
 public class BidDtoToBidConverter implements Converter<BidDto, Bid> {
 
-
     @Override
     public Bid convert(@NonNull BidDto bidDto) {
         var bid = Bid.builder()

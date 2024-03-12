@@ -1,5 +1,6 @@
 package pb.auctionservice.service.impl;
 
+import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +26,13 @@ public class AuctionServiceImpl implements AuctionService {
         log.info("Creating auction: [{}]", auctionDto);
         return auctionRepository.save(Objects.requireNonNull(conversionService.convert(auctionDto, Auction.class)))
             .map(this::convertResponse);
+    }
+
+    @Override
+    public Mono<List<AuctionDto>> getAllAuctions() {
+        return auctionRepository.findAll()
+            .map(this::convertResponse)
+            .collectList();
     }
 
     private AuctionDto convertResponse(Auction auction) {

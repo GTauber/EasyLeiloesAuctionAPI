@@ -1,10 +1,11 @@
 package pb.auctionservice.service.impl;
 
+import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.stereotype.Service;
 import pb.auctionservice.models.dto.ProductDto;
 import pb.auctionservice.models.entity.Product;
@@ -24,12 +25,21 @@ public class ProductServiceImpl implements ProductService {
     public Mono<ProductDto> createProduct(ProductDto productDto) {
         log.info("Creating product: [{}]", productDto);
         return productRepository.save(Objects.requireNonNull(conversionService.convert(productDto, Product.class)))
-            .map(this::convertResponse);
+            .map(product -> Objects.requireNonNull(conversionService.convert(product, ProductDto.class)));
     }
 
-    private ProductDto convertResponse(Product product) {
-        var productDto = ProductDto.builder().build();
-        BeanUtils.copyProperties(product, productDto);
-        return productDto;
+    @Override
+    public Mono<List<ProductDto>> getAllProducts() {
+        return productRepository.findAll()
+            .collectList()
+            .map(Objects.requireNonNull(this::convertResponse));
     }
+
+    @SuppressWarnings("unchecked")
+    private List<ProductDto> convertResponse(List<Product> products) {
+        var sourceType = TypeDescriptor.collection(List.class, TypeDescriptor.valueOf(Product.class));
+        var targetType = TypeDescriptor.collection(List.class, TypeDescriptor.valueOf(ProductDto.class));
+        return (List<ProductDto>) conversionService.convert(products, sourceType, targetType);
+    }
+
 }

@@ -1,13 +1,16 @@
 package pb.auctionservice.controller;
 
 import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.OK;
 
 import jakarta.validation.Valid;
+import java.util.List;
 import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.MimeTypeUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,6 +39,18 @@ public class ProductController {
                 .statusCode(CREATED.value())
                 .message("Product created successfully")
                 .data(Map.of("Product", product))
+                .build());
+    }
+
+    @GetMapping(produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
+    @ResponseStatus(OK)
+    public Mono<Response<List<ProductDto>>> getAllProducts() {
+        return productService.getAllProducts()
+            .map(products -> Response.<List<ProductDto>>builder()
+                .status(CREATED)
+                .statusCode(CREATED.value())
+                .message("Products retrieved successfully")
+                .data(Map.of("Products", products))
                 .build());
     }
 
