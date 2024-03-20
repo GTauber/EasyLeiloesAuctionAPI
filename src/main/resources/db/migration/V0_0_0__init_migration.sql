@@ -2,6 +2,7 @@ CREATE TABLE product
 (
     id             BIGINT PRIMARY KEY AUTO_INCREMENT,
     uuid           CHAR(36)     NOT NULL UNIQUE,
+    user_id        BIGINT       NOT NULL,
     version        BIGINT       NOT NULL,
     name           VARCHAR(50)  NOT NULL,
     description    VARCHAR(255) NOT NULL,

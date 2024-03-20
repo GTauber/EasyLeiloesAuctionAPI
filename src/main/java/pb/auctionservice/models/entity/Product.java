@@ -34,6 +34,7 @@ public class Product implements Serializable {
     private Long id;
     @Builder.Default
     private String uuid = UUID.randomUUID().toString();
+    private Long userId;
     @Version
     private Long version;
     private String name;

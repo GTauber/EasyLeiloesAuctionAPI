@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import pb.auctionservice.config.security.authentication.JWTAuthentication;
 import pb.auctionservice.models.dto.ProductDto;
 import pb.auctionservice.models.entity.Response;
 import pb.auctionservice.service.ProductService;
@@ -32,7 +33,8 @@ public class ProductController {
 
     @PostMapping(consumes = MimeTypeUtils.APPLICATION_JSON_VALUE, produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
     @ResponseStatus(CREATED)
-    public Mono<Response<ProductDto>> createProduct(@RequestBody @Valid ProductDto productDto) {
+    public Mono<Response<ProductDto>> createProduct(@RequestBody @Valid ProductDto productDto, JWTAuthentication authentication) {
+        productDto.setUserId(authentication.getUserId());
         return productService.createProduct(productDto)
             .map(product -> Response.<ProductDto>builder()
                 .status(CREATED)
@@ -44,8 +46,12 @@ public class ProductController {
 
     @GetMapping(produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
     @ResponseStatus(OK)
-    public Mono<Response<List<ProductDto>>> getAllProducts() {
-        return productService.getAllProducts()
+    public Mono<Response<List<ProductDto>>> getAllProducts(boolean adminRequest, JWTAuthentication authentication) {
+
+        return Mono.just(adminRequest)
+            .filter(admin -> admin)
+            .flatMap(adm -> productService.getAllProducts())
+            .switchIfEmpty(productService.getProductByUserId(authentication.getUserId()))
             .map(products -> Response.<List<ProductDto>>builder()
                 .status(CREATED)
                 .statusCode(CREATED.value())

@@ -29,6 +29,14 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public Mono<List<ProductDto>> getProductByUserId(Long userId) {
+        log.info("Retrieving products for user: [{}]", userId);
+        return productRepository.findAllByUserId(userId)
+            .collectList()
+            .map(Objects.requireNonNull(this::convertResponse));
+    }
+
+    @Override
     public Mono<List<ProductDto>> getAllProducts() {
         return productRepository.findAll()
             .collectList()

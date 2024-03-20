@@ -8,6 +8,8 @@ public interface ProductService {
 
     Mono<ProductDto> createProduct(ProductDto productDto);
 
+    Mono<List<ProductDto>> getProductByUserId(Long userId);
+
     Mono<List<ProductDto>> getAllProducts();
 
 
