@@ -43,6 +43,13 @@ public class ProductServiceImpl implements ProductService {
             .map(Objects.requireNonNull(this::convertResponse));
     }
 
+    @Override
+    public Mono<ProductDto> getProductById(Long productId, Long currentUserId) {
+        return productRepository.findById(productId)
+            .filter(product -> product.getUserId().equals(currentUserId))
+            .map(product -> Objects.requireNonNull(conversionService.convert(product, ProductDto.class)));
+    }
+
     @SuppressWarnings("unchecked")
     private List<ProductDto> convertResponse(List<Product> products) {
         var sourceType = TypeDescriptor.collection(List.class, TypeDescriptor.valueOf(Product.class));
