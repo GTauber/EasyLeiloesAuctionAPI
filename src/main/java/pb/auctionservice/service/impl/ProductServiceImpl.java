@@ -11,6 +11,7 @@ import pb.auctionservice.models.dto.ProductDto;
 import pb.auctionservice.models.entity.Product;
 import pb.auctionservice.repository.ProductRepository;
 import pb.auctionservice.service.ProductService;
+import pb.auctionservice.utils.CustomBeanUtils;
 import reactor.core.publisher.Mono;
 
 @Slf4j
@@ -47,6 +48,14 @@ public class ProductServiceImpl implements ProductService {
     public Mono<ProductDto> getProductById(Long productId, Long currentUserId) {
         return productRepository.findById(productId)
             .filter(product -> product.getUserId().equals(currentUserId))
+            .map(product -> Objects.requireNonNull(conversionService.convert(product, ProductDto.class)));
+    }
+
+    @Override
+    public Mono<ProductDto> updateProduct(ProductDto productDto) {
+        return productRepository.findById(productDto.getId())
+            .doOnNext(product -> CustomBeanUtils.copyNonNullProperties(productDto, product))
+            .flatMap(productRepository::save)
             .map(product -> Objects.requireNonNull(conversionService.convert(product, ProductDto.class)));
     }
 

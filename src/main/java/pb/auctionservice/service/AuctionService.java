@@ -13,4 +13,6 @@ public interface AuctionService {
     Mono<List<AuctionDto>> getAuctionsByUserUuid(String userUuid);
 
     Mono<List<AuctionDto>> getOtherAuctions(String uuid);
+
+    Mono<AuctionDto> updateAuction(AuctionDto auctionDto);
 }

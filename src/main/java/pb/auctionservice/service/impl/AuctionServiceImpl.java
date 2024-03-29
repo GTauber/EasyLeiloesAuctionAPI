@@ -11,6 +11,7 @@ import pb.auctionservice.models.dto.AuctionDto;
 import pb.auctionservice.models.entity.Auction;
 import pb.auctionservice.repository.AuctionRepository;
 import pb.auctionservice.service.AuctionService;
+import pb.auctionservice.utils.CustomBeanUtils;
 import reactor.core.publisher.Mono;
 
 @Slf4j
@@ -48,6 +49,14 @@ public class AuctionServiceImpl implements AuctionService {
         return auctionRepository.findAllByAuctionOwnerUuidNot(uuid)
             .map(this::convertResponse)
             .collectList();
+    }
+
+    @Override
+    public Mono<AuctionDto> updateAuction(AuctionDto auctionDto) {
+        return auctionRepository.findById(auctionDto.getId())
+            .doOnNext(auction -> CustomBeanUtils.copyNonNullProperties(auctionDto, auction))
+            .flatMap(auctionRepository::save)
+            .map(this::convertResponse);
     }
 
     private AuctionDto convertResponse(Auction auction) {

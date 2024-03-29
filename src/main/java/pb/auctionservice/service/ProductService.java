@@ -2,6 +2,7 @@ package pb.auctionservice.service;
 
 import java.util.List;
 import pb.auctionservice.models.dto.ProductDto;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public interface ProductService {
@@ -14,4 +15,6 @@ public interface ProductService {
 
 
     Mono<ProductDto> getProductById(Long productId, Long currentUserId);
+
+    Mono<ProductDto> updateProduct(ProductDto productDto);
 }

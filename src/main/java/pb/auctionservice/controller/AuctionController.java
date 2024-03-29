@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -81,5 +82,17 @@ public class AuctionController {
                 .data(Map.of("Auctions", auctionDtoList))
                 .build()
             );
+    }
+
+    @PutMapping(consumes = MimeTypeUtils.APPLICATION_JSON_VALUE, produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
+    @ResponseStatus(OK)
+    public Mono<Response<AuctionDto>> updateAuction(@RequestBody @Valid AuctionDto auctionDto) {
+        return auctionService.updateAuction(auctionDto)
+            .map(auction -> Response.<AuctionDto>builder()
+                .status(CREATED)
+                .statusCode(CREATED.value())
+                .message("Auction updated successfully")
+                .data(Map.of("Auction", auction))
+                .build());
     }
 }

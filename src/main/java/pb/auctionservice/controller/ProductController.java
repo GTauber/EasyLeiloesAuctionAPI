@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -48,7 +49,6 @@ public class ProductController {
     @GetMapping(produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
     @ResponseStatus(OK)
     public Mono<Response<List<ProductDto>>> getAllProducts(boolean adminRequest, JWTAuthentication authentication) {
-
         return Mono.just(adminRequest)
             .filter(admin -> admin)
             .flatMap(adm -> productService.getAllProducts())
@@ -64,12 +64,23 @@ public class ProductController {
     @GetMapping(path = "/{productId}", produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
     @ResponseStatus(OK)
     public Mono<Response<ProductDto>> getProduct(JWTAuthentication authentication, @PathVariable Long productId) {
-
         return productService.getProductById(productId, authentication.getUserId())
             .map(product -> Response.<ProductDto>builder()
                 .status(OK)
                 .statusCode(OK.value())
                 .message("Product retrieved successfully")
+                .data(Map.of("Product", product))
+                .build());
+    }
+
+    @PutMapping(consumes = MimeTypeUtils.APPLICATION_JSON_VALUE, produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
+    @ResponseStatus(OK)
+    public Mono<Response<ProductDto>> updateProduct(@RequestBody @Valid ProductDto productDto) {
+        return productService.updateProduct(productDto)
+            .map(product -> Response.<ProductDto>builder()
+                .status(OK)
+                .statusCode(OK.value())
+                .message("Product updated successfully")
                 .data(Map.of("Product", product))
                 .build());
     }
