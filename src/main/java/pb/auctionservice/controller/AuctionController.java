@@ -57,6 +57,19 @@ public class AuctionController {
             );
     }
 
+    @GetMapping(path = "/other/{uuid}", produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
+    @ResponseStatus(OK)
+    public Mono<Response<List<AuctionDto>>> getOtherAuctionsDifferentThanUuid(@PathVariable String uuid) {
+        return auctionService.getOtherAuctions(uuid)
+            .map(auctionDtoList -> Response.<List<AuctionDto>>builder()
+                .status(CREATED)
+                .statusCode(CREATED.value())
+                .message("Auctions retrieved successfully")
+                .data(Map.of("Auctions", auctionDtoList))
+                .build()
+            );
+    }
+
     @GetMapping(produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
     @ResponseStatus(OK)
     public Mono<Response<List<AuctionDto>>> findAllAuctions() {

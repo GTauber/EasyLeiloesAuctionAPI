@@ -8,4 +8,6 @@ public interface AuctionRepository extends R2dbcRepository<Auction, Long> {
 
     Flux<Auction> findAllByAuctionOwnerUuid(String userUuid);
 
+    Flux<Auction> findAllByAuctionOwnerUuidNot(String uuid);
+
 }

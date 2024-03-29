@@ -43,6 +43,13 @@ public class AuctionServiceImpl implements AuctionService {
             .collectList();
     }
 
+    @Override
+    public Mono<List<AuctionDto>> getOtherAuctions(String uuid) {
+        return auctionRepository.findAllByAuctionOwnerUuidNot(uuid)
+            .map(this::convertResponse)
+            .collectList();
+    }
+
     private AuctionDto convertResponse(Auction auction) {
         var auctionDto = AuctionDto.builder().build();
         BeanUtils.copyProperties(auction, auctionDto);

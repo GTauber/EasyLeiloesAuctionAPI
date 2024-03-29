@@ -2,6 +2,7 @@ package pb.auctionservice.service;
 
 import java.util.List;
 import pb.auctionservice.models.dto.AuctionDto;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public interface AuctionService {
@@ -11,4 +12,6 @@ public interface AuctionService {
     Mono<List<AuctionDto>> getAllAuctions();
 
     Mono<List<AuctionDto>> getAuctionsByUserUuid(String userUuid);
+
+    Mono<List<AuctionDto>> getOtherAuctions(String uuid);
 }
