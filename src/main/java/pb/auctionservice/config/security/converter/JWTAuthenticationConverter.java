@@ -30,6 +30,6 @@ public class JWTAuthenticationConverter implements ServerAuthenticationConverter
     private Authentication buildJWTAuthentication(String token) {
         var claims = jwtUtil.getClaimsIfValid(token);
         return new JWTAuthentication(claims.getIssuer(), claims.getSubject(), token,
-            claims.get("userId", Long.class), jwtUtil.getRolesFromClaims(claims));
+            claims.get("userId", Long.class), claims.get("userUuid", String.class), jwtUtil.getRolesFromClaims(claims));
     }
 }

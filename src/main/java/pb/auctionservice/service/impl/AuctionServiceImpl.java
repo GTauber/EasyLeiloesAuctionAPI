@@ -22,7 +22,8 @@ public class AuctionServiceImpl implements AuctionService {
     private final ConversionService conversionService;
 
     @Override
-    public Mono<AuctionDto> createAuction(AuctionDto auctionDto) {
+    public Mono<AuctionDto> createAuction(AuctionDto auctionDto, String userUuid) {
+        auctionDto.setAuctionOwnerUuid(userUuid);
         log.info("Creating auction: [{}]", auctionDto);
         return auctionRepository.save(Objects.requireNonNull(conversionService.convert(auctionDto, Auction.class)))
             .map(this::convertResponse);
@@ -31,6 +32,13 @@ public class AuctionServiceImpl implements AuctionService {
     @Override
     public Mono<List<AuctionDto>> getAllAuctions() {
         return auctionRepository.findAll()
+            .map(this::convertResponse)
+            .collectList();
+    }
+
+    @Override
+    public Mono<List<AuctionDto>> getAuctionsByUserUuid(String userUuid) {
+        return auctionRepository.findAllByAuctionOwnerUuid(userUuid)
             .map(this::convertResponse)
             .collectList();
     }

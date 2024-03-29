@@ -44,13 +44,16 @@ public class JWTAuthentication extends AbstractAuthenticationToken implements Se
 
     private Long userId;
 
-    public JWTAuthentication(String issuer, String principal, String token, Long userId,
+    private String userUuid;
+
+    public JWTAuthentication(String issuer, String principal, String token, Long userId, String userUuid,
         Collection<? extends GrantedAuthority> authorities) {
         super(authorities);
         this.issuer = issuer;
         this.principal = principal;
         this.token = token;
         this.userId = userId;
+        this.userUuid = userUuid;
         super.setAuthenticated(true);
     }
 

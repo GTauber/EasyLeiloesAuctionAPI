@@ -6,7 +6,9 @@ import reactor.core.publisher.Mono;
 
 public interface AuctionService {
 
-    Mono<AuctionDto> createAuction(AuctionDto auctionDto);
+    Mono<AuctionDto> createAuction(AuctionDto auctionDto, String userUuid);
 
     Mono<List<AuctionDto>> getAllAuctions();
+
+    Mono<List<AuctionDto>> getAuctionsByUserUuid(String userUuid);
 }

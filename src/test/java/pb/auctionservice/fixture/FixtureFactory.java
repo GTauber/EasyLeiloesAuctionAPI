@@ -69,7 +69,6 @@ public class FixtureFactory {
     public static AuctionDto validAuctionDto() {
         return AuctionDto.builder()
             .productId(1L)
-            .auctionOwnerUuid("0001")
             .auctionStartDate(LocalDateTime.parse("2021-12-01T00:00:00"))
             .auctionEndDate(LocalDateTime.parse("2021-12-31T23:59:59"))
             .auctionStatus(AuctionStatus.ACTIVE)

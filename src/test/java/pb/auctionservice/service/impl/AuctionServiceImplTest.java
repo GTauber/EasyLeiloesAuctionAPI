@@ -35,7 +35,7 @@ class AuctionServiceImplTest {
         when(auctionRepository.save(any(Auction.class))).thenReturn(Mono.just(validAuction()));
         when(conversionService.convert(any(AuctionDto.class), eq(Auction.class))).thenReturn(validAuction());
 
-        var response = auctionService.createAuction(validAuctionDto()).block();
+        var response = auctionService.createAuction(validAuctionDto(), "uuid").block();
 
         assertNotNull(response);
 
