@@ -15,14 +15,14 @@ CREATE TABLE product
 
 CREATE TABLE bid
 (
-    id         BIGINT PRIMARY KEY AUTO_INCREMENT,
-    uuid       CHAR(36)       NOT NULL UNIQUE,
-    version    BIGINT         NOT NULL,
-    auction_id BIGINT         NOT NULL,
-    user_uuid  BIGINT         NOT NULL,
-    amount     DECIMAL(10, 2) NOT NULL,
-    created_at TIMESTAMP      NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP      NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    id          BIGINT PRIMARY KEY AUTO_INCREMENT,
+    uuid        CHAR(36)       NOT NULL UNIQUE,
+    version     BIGINT         NOT NULL,
+    auction_id  BIGINT         NOT NULL,
+    bidder_uuid CHAR(36)         NOT NULL,
+    amount      DECIMAL(10, 2) NOT NULL,
+    created_at  TIMESTAMP      NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at  TIMESTAMP      NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=UTF8;
 
 CREATE TABLE auction
@@ -39,8 +39,8 @@ CREATE TABLE auction
     initial_price      DECIMAL(10, 2) NOT NULL,
     created_at         TIMESTAMP      NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at         TIMESTAMP      NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (product_id) REFERENCES product(id),
-    FOREIGN KEY (bid_winner_id) REFERENCES bid(id)
+    FOREIGN KEY (product_id) REFERENCES product (id),
+    FOREIGN KEY (bid_winner_id) REFERENCES bid (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=UTF8;
 
 ALTER TABLE bid

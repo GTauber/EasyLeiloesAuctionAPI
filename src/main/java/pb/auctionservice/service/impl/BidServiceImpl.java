@@ -10,6 +10,7 @@ import pb.auctionservice.models.dto.BidDto;
 import pb.auctionservice.models.entity.Bid;
 import pb.auctionservice.repository.BidRepository;
 import pb.auctionservice.service.BidService;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Slf4j
@@ -23,6 +24,12 @@ public class BidServiceImpl implements BidService {
     @Override
     public Mono<BidDto> makeBid(BidDto bidDto) {
         return bidRepository.save(Objects.requireNonNull(conversionService.convert(bidDto, Bid.class)))
+            .map(this::convertResponse);
+    }
+
+    @Override
+    public Flux<BidDto> getBidsByAuctionId(Long auctionId) {
+        return bidRepository.findAllByAuctionId(auctionId)
             .map(this::convertResponse);
     }
 
