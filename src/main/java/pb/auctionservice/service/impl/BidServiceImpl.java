@@ -12,6 +12,7 @@ import pb.auctionservice.models.dto.BidDto;
 import pb.auctionservice.models.entity.Bid;
 import pb.auctionservice.repository.BidRepository;
 import pb.auctionservice.service.BidService;
+import pb.auctionservice.websocket.BidWebSocketHandler;
 import reactor.core.publisher.Mono;
 
 @Slf4j
@@ -21,11 +22,13 @@ public class BidServiceImpl implements BidService {
 
     private final BidRepository bidRepository;
     private final ConversionService conversionService;
+    private final BidWebSocketHandler bidWebSocketHandler;
 
     @Override
     public Mono<BidDto> makeBid(BidDto bidDto) {
         return bidRepository.save(Objects.requireNonNull(conversionService.convert(bidDto, Bid.class)))
-            .map(this::convertResponse);
+            .map(this::convertResponse)
+            .doOnSuccess(bidWebSocketHandler::broadcastUpdate);
     }
 
     @Override
