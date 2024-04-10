@@ -73,8 +73,8 @@ public class AuctionController {
 
     @GetMapping(produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
     @ResponseStatus(OK)
-    public Mono<Response<List<AuctionDto>>> findAllAuctions() {
-        return auctionService.getAllAuctions()
+    public Mono<Response<List<AuctionDto>>> findMyAuctions(JWTAuthentication jwtAuth) {
+        return auctionService.getAuctionsByUserUuid(jwtAuth.getUserUuid())
             .map(auctionDtoList -> Response.<List<AuctionDto>>builder()
                 .status(OK)
                 .statusCode(OK.value())

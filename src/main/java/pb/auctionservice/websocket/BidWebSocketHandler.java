@@ -29,7 +29,7 @@ public class BidWebSocketHandler implements WebSocketHandler {
     public Mono<Void> handle(@Nonnull WebSocketSession session) {
         sessions.add(session);
         return session.send(session.receive()
-            .map(msg -> handleIncomingMessage(msg, session))
+            .doOnNext(msg -> handleIncomingMessage(msg, session))
             .onErrorResume(e -> Mono.just(session.textMessage("Error processing your request.")))
             .doFinally(sig -> sessions.remove(session))
         );
@@ -45,14 +45,12 @@ public class BidWebSocketHandler implements WebSocketHandler {
         }
     }
 
-    private WebSocketMessage handleIncomingMessage(WebSocketMessage msg, WebSocketSession session) {
+    private void handleIncomingMessage(WebSocketMessage msg, WebSocketSession session) {
         try {
             BidDto bidDto = objectMapper.readValue(msg.getPayloadAsText(), BidDto.class);
             broadcastUpdate(bidDto);
-            return session.textMessage("Bid received");
         } catch (JsonProcessingException e) {
             log.error("Error parsing BidDto: [{}]", e.getMessage());
-            return session.textMessage("Error processing bid");
         }
     }
 
