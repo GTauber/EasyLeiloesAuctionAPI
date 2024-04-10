@@ -45,7 +45,7 @@ public class BidController {
 
     @GetMapping(path = "/auctionId/{auctionId}", produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
     @ResponseStatus(OK)
-    public Mono<Response<List<BidDto>>> makeBid(@PathVariable Long auctionId) {
+    public Mono<Response<List<BidDto>>> getBidsByAuctionId(@PathVariable Long auctionId) {
         return bidService.getBidsByAuctionId(auctionId)
             .map(bid -> Response.<List<BidDto>>builder()
                 .status(OK)
