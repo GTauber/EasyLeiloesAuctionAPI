@@ -45,6 +45,13 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public Mono<List<ProductDto>> getAllProductsDifferentThanUserUuid(Long userId) {
+        return productRepository.findAllByUserIdNot(userId)
+            .collectList()
+            .map(product -> Objects.requireNonNull(this.convertResponse(product)));
+    }
+
+    @Override
     public Mono<ProductDto> getProductById(Long productId, Long currentUserId) {
         return productRepository.findById(productId)
             .filter(product -> product.getUserId().equals(currentUserId))

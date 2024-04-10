@@ -4,6 +4,7 @@ import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 
 import jakarta.validation.Valid;
+import java.util.List;
 import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 import pb.auctionservice.models.dto.BidDto;
 import pb.auctionservice.models.entity.Response;
 import pb.auctionservice.service.BidService;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @RestController
@@ -45,13 +45,13 @@ public class BidController {
 
     @GetMapping(path = "/auctionId/{auctionId}", produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
     @ResponseStatus(OK)
-    public Flux<Response<BidDto>> makeBid(@PathVariable Long auctionId) {
+    public Mono<Response<List<BidDto>>> makeBid(@PathVariable Long auctionId) {
         return bidService.getBidsByAuctionId(auctionId)
-            .map(bid -> Response.<BidDto>builder()
+            .map(bid -> Response.<List<BidDto>>builder()
                 .status(OK)
                 .statusCode(OK.value())
-                .message("Bid retrieved successfully")
-                .data(Map.of("Bid", bid))
+                .message("Bids retrieved successfully")
+                .data(Map.of("Bids", bid))
                 .build());
     }
 

@@ -50,21 +50,21 @@ public class AuctionController {
     public Mono<Response<List<AuctionDto>>> getAuctionsByUuid(JWTAuthentication jwtAuth, @PathVariable String userUuid) {
         return auctionService.getAuctionsByUserUuid(userUuid == null ? jwtAuth.getUserUuid() : userUuid)
             .map(auctionDtoList -> Response.<List<AuctionDto>>builder()
-                .status(CREATED)
-                .statusCode(CREATED.value())
+                .status(OK)
+                .statusCode(OK.value())
                 .message("Auctions retrieved successfully")
                 .data(Map.of("Auctions", auctionDtoList))
                 .build()
             );
     }
 
-    @GetMapping(path = "/other/{uuid}", produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/other/{userUuid}", produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
     @ResponseStatus(OK)
-    public Mono<Response<List<AuctionDto>>> getOtherAuctionsDifferentThanUuid(@PathVariable String uuid) {
-        return auctionService.getOtherAuctions(uuid)
+    public Mono<Response<List<AuctionDto>>> getOtherAuctionsDifferentThanUuid(@PathVariable String userUuid) {
+        return auctionService.getOtherAuctions(userUuid)
             .map(auctionDtoList -> Response.<List<AuctionDto>>builder()
-                .status(CREATED)
-                .statusCode(CREATED.value())
+                .status(OK)
+                .statusCode(OK.value())
                 .message("Auctions retrieved successfully")
                 .data(Map.of("Auctions", auctionDtoList))
                 .build()
@@ -76,8 +76,8 @@ public class AuctionController {
     public Mono<Response<List<AuctionDto>>> findAllAuctions() {
         return auctionService.getAllAuctions()
             .map(auctionDtoList -> Response.<List<AuctionDto>>builder()
-                .status(CREATED)
-                .statusCode(CREATED.value())
+                .status(OK)
+                .statusCode(OK.value())
                 .message("Auctions retrieved successfully")
                 .data(Map.of("Auctions", auctionDtoList))
                 .build()
@@ -89,8 +89,8 @@ public class AuctionController {
     public Mono<Response<AuctionDto>> updateAuction(@RequestBody @Valid AuctionDto auctionDto) {
         return auctionService.updateAuction(auctionDto)
             .map(auction -> Response.<AuctionDto>builder()
-                .status(CREATED)
-                .statusCode(CREATED.value())
+                .status(OK)
+                .statusCode(OK.value())
                 .message("Auction updated successfully")
                 .data(Map.of("Auction", auction))
                 .build());

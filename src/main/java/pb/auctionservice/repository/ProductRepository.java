@@ -8,4 +8,6 @@ public interface ProductRepository extends R2dbcRepository<Product, Long> {
 
     Flux<Product> findAllByUserId(Long userId);
 
+    Flux<Product> findAllByUserIdNot(Long userId);
+
 }

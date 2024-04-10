@@ -85,4 +85,15 @@ public class ProductController {
                 .build());
     }
 
+    @GetMapping(path = "/other/{userId}", produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
+    @ResponseStatus(OK)
+    public Mono<Response<List<ProductDto>>> getProductsDifferentThanUserUuid(@PathVariable Long userId) {
+        return productService.getAllProductsDifferentThanUserUuid(userId)
+            .map(products -> Response.<List<ProductDto>>builder()
+                .status(OK)
+                .statusCode(OK.value())
+                .message("Products retrieved successfully")
+                .data(Map.of("Products", products))
+                .build());
+    }
 }

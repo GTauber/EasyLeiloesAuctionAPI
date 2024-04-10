@@ -12,6 +12,8 @@ public interface ProductService {
 
     Mono<List<ProductDto>> getAllProducts();
 
+    Mono<List<ProductDto>> getAllProductsDifferentThanUserUuid(Long userId);
+
 
     Mono<ProductDto> getProductById(Long productId, Long currentUserId);
 
