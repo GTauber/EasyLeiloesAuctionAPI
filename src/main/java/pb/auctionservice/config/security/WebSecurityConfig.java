@@ -61,6 +61,7 @@ public class WebSecurityConfig {
             .cors(corsSpec -> corsSpec.configurationSource(corsConfigurationSource()))
             .csrf(CsrfSpec::disable)
             .authorizeExchange(exchanges -> exchanges
+                .pathMatchers("/ws/**").permitAll()
                 .anyExchange().authenticated()
             ).formLogin(FormLoginSpec::disable)
             .httpBasic(HttpBasicSpec::disable)
