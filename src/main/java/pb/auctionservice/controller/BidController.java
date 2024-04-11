@@ -55,4 +55,16 @@ public class BidController {
                 .build());
     }
 
+    @GetMapping(path = "/lastBid/{auctionId}", produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
+    @ResponseStatus(OK)
+    public Mono<Response<BidDto>> getBiggerAmountBidByAuctionId(@PathVariable Long auctionId) {
+        return bidService.getHighestAmountBidByAuctionId(auctionId)
+            .map(bid -> Response.<BidDto>builder()
+                .status(OK)
+                .statusCode(OK.value())
+                .message("Highest amount bid retrieved successfully")
+                .data(Map.of("Bid", bid))
+                .build());
+    }
+
 }

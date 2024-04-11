@@ -38,6 +38,12 @@ public class BidServiceImpl implements BidService {
             .map(this::convertResponse);
     }
 
+    @Override
+    public Mono<BidDto> getHighestAmountBidByAuctionId(Long auctionId) {
+        return bidRepository.findBidWithHighestAmountByAuctionId(auctionId)
+            .map(this::convertResponse);
+    }
+
     private BidDto convertResponse(Bid bid) {
         var bidDto = BidDto.builder().build();
         BeanUtils.copyProperties(bid, bidDto);

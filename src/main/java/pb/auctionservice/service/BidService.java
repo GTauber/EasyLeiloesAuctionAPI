@@ -9,4 +9,6 @@ public interface BidService {
     Mono<BidDto> makeBid(BidDto bidDto);
 
     Mono<List<BidDto>> getBidsByAuctionId(Long auctionId);
+
+    Mono<BidDto> getHighestAmountBidByAuctionId(Long auctionId);
 }
